@@ -1,3 +1,4 @@
+# ruff: noqa: PLW2901, C901
 # ===========================
 # HyperLoop Suite
 # Data Handling Module
@@ -69,11 +70,11 @@ class DataHandling:
                 try:
                     # Remove all contents with safety checks
                     for item in runs_dir.iterdir():
-                        # Additional safety: ensure we're only deleting within the expected directory
+                        # Sanity check: ensure we're only deleting within the expected directory
                         if not item.is_relative_to(runs_dir):
                             print(f"Warning: Skipping unsafe path: {item}")
                             continue
-                            
+
                         if item.is_file():
                             item.unlink()
                         elif item.is_dir():
@@ -89,7 +90,7 @@ class DataHandling:
             print("Created: Results folder")
 
     # ----------------------------------------------------------------------------------------------
-    # Helpers
+    # Utilities
 
     def save_data(self):
         """
@@ -135,7 +136,7 @@ class DataHandling:
         else:
             worst_result = max(top_results, key=lambda x: x.get("objective", float("inf")))
             if new_result.get("objective", float("inf")) < worst_result.get(
-                    "objective", float("inf")
+                "objective", float("inf")
             ):
                 top_results.remove(worst_result)
                 top_results.append(new_result)
@@ -185,6 +186,26 @@ class DataHandling:
 
         # Parse content
         return self.parse_log_file(content, run_dir)
+
+    @staticmethod
+    def copy_hyperopt_results(strat_name: str, strategies_dir: Path, run_dir: Path) -> None:
+        """
+        Copy strategy JSON to run directory.
+        """
+
+        # Copy strategy JSON file
+        strategy_json = strategies_dir / f"{strat_name}.json"
+        if strategy_json.exists():
+            try:
+                shutil.copy2(strategy_json, run_dir / strategy_json.name)
+                print(f"\nCopied strategy JSON to {run_dir / strategy_json.name}")
+                print(f"{'=' * 60}", flush=True)
+                # Clean up original strategy JSON
+                strategy_json.unlink()
+            except OSError as e:
+                print(f"Warning: Could not copy strategy JSON: {e}")
+        else:
+            print(f"Warning: Strategy JSON not found: {strategy_json}")
 
     # ----------------------------------------------------------------------------------------------
     # Main Methods

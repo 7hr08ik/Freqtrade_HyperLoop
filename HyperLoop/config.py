@@ -43,8 +43,12 @@ HYPEROPT_LOSS = "SharpeHyperOptLoss"
 # CalmarHyperOptLoss
 # ProfitDrawDownHyperOptLoss
 
+# Space to optimize
+SPACES = "buy"
+# default, all, buy, sell, roi, stoploss, trailing, protection, trades.
+
 # ---------------------------
-# Data settings
+# Time settings
 # ---------------------------
 
 # Format: "YYYYMMDD-YYYYMMDD"
@@ -53,7 +57,3 @@ TIMERANGE = "20240501-20241116"
 
 # Intra-candle timeframe
 TIMEFRAME_DETAIL = "1m"
-
-# Space to optimize
-SPACES = "buy"
-# default, all, buy, sell, roi, stoploss, trailing, protection, trades.

@@ -52,9 +52,10 @@ if __name__ == "__main__":
     log_dir = Path("HyperLoop/logs")
     log_dir.mkdir(parents=True, exist_ok=True)
 
-    # Clean up old logs before creating new one
     print("Pre-processing...")
     print(f"{'-' * 20}", flush=True)
+
+    # Clean up old logs before creating new one
     cleanup_old_logs(log_dir, MAX_LOG_FILES)
 
     # Create log file with timestamp
@@ -68,7 +69,6 @@ if __name__ == "__main__":
         "from HyperLoop.scripts.HyperLoop import HyperLoop; suite = HyperLoop(); suite.run_loop()",
     ]
 
-    # Execute with tee logging (secure version without shell=True)
     try:
         process = subprocess.Popen(
             cmd,
@@ -81,7 +81,7 @@ if __name__ == "__main__":
         print(f"Error starting HyperLoop process: {e}")
         sys.exit(1)
 
-    # Use tee-like functionality by writing to both console and file
+    # Copy terminal output and write to log file
     with log_file.open("w") as f:
         for line in process.stdout:
             print(line, end="")  # Output to console

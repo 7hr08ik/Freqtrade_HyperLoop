@@ -37,8 +37,8 @@ class TerminalManager:
 
         # Try common Linux terminals in order of preference
         terminals = {
-            "gnome-terminal": ["gnome-terminal", "--", "bash", "-c", full_cmd],
             "konsole": ["konsole", "-e", "bash", "-c", full_cmd],
+            "gnome-terminal": ["gnome-terminal", "--", "bash", "-c", full_cmd],
             "xterm": ["xterm", "-e", "bash", "-c", full_cmd],
         }
 

@@ -15,6 +15,9 @@ class DisplayData:
     Display formatted results and loop progress.
     """
 
+    # ----------------------------------------------------------------------------------------------
+    # Functions
+
     @staticmethod
     def progress_bar(current: int, total: int):
         """
@@ -122,16 +125,10 @@ class DisplayData:
             avg_profit_str = f"{avg_profit:>6.2f}%" if avg_profit != 0 else "N/A"
 
             avg_duration = metrics.get("avg_duration", "N/A")
-            if avg_duration != "N/A":
-                avg_duration_str = f"{avg_duration:>11}"
-            else:
-                avg_duration_str = "N/A"
+            avg_duration_str = f"{avg_duration:>11}" if avg_duration != "N/A" else "N/A"
 
             objective = metrics.get("objective", "N/A")
-            if objective != "N/A":
-                objective_str = f"{objective:>11.3f}"
-            else:
-                objective_str = "N/A"
+            objective_str = f"{objective:>11.3f}" if objective != "N/A" else "N/A"
 
             # Extract max drawdown from the result structure
             max_drawdown = result.get("drawdown", "N/A")
@@ -140,6 +137,7 @@ class DisplayData:
             else:
                 max_drawdown_str = "N/A"
 
+            # Add formatted data to table data
             row = [
                 str(run_num),
                 str(trades),
@@ -150,7 +148,6 @@ class DisplayData:
                 objective_str,
                 max_drawdown_str,
             ]
-
             table_data.append(row)
 
             # Update column widths based on data
@@ -158,7 +155,7 @@ class DisplayData:
                 if len(str(cell)) > col_widths[j]:
                     col_widths[j] = len(str(cell))
 
-        # Build table string
+        # Build results table
         # Top border
         top_border = "┏" + "┳".join("━" * (width + 2) for width in col_widths) + "┓"
         print(top_border)
