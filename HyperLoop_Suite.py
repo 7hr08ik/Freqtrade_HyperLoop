@@ -20,10 +20,12 @@ def cleanup_old_logs(logs_dir: Path, max_files: int) -> None:
     Remove old log files if exceeding the maximum limit.
     """
 
-    if max_files <= 0:
-        return  # No limit set
-
+    # Skip when no log directory exists
     if not logs_dir.exists():
+        return
+
+    # Skip when no files exist
+    if max_files <= 0:
         return
 
     # Get all log files sorted by modification time (newest first)
@@ -69,7 +71,11 @@ if __name__ == "__main__":
     # Execute with tee logging (secure version without shell=True)
     try:
         process = subprocess.Popen(
-            cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=str(Path.cwd()), text=True
+            cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            cwd=str(Path.cwd()),
+            text=True,
         )
     except (OSError, subprocess.SubprocessError) as e:
         print(f"Error starting HyperLoop process: {e}")
